@@ -3,28 +3,24 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Random 3D Model Viewer</title>
+  <title>Juels</title>
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
   <style>
+    /* Make html/body fill the viewport */
     html, body {
       margin: 0;
       padding: 0;
-      height: 100%;
       width: 100%;
-      overflow: hidden;
+      height: 100%;
       background: white;
     }
 
-    body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-    }
-
+    /* Model viewer fills most of the screen but leaves space for AR button */
     model-viewer {
+      display: block;
       width: 100%;
-      max-height: 90vh;  /* leave space for AR button */
+      height: 90vh;       /* 90% of viewport height */
+      margin: 0 auto;
       background: #fff;
     }
   </style>
