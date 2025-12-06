@@ -1,82 +1,48 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Random 3D Model Viewer (AR Ready)</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Random 3D Model Viewer</title>
 
-    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-    <script nomodule src="https://unpkg.com/@google/model-viewer/dist/model-viewer-legacy.js"></script>
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 
-  <style>
-    /* Basic setup for full screen model-viewer */
-    body, html { margin:0; padding:0; height:100%; overflow:hidden; background:white; }
-    model-viewer { 
-      width:100%; 
-      height:100vh; 
-      background-color: #f0f0f0; /* Light gray background for contrast */
-      border: none;
-    }
-  </style>
+  <style>
+    body, html { margin:0; padding:0; height:100%; overflow:hidden; background:white; }
+    model-viewer { width:100%; height:100vh; background:#fff; }
+  </style>
 </head>
 <body>
 
 <model-viewer id="mv"
-  src=""
-  ar
-  camera-controls
-  auto-rotate
-  touch-action="pan-y"
-  alt="A randomly selected 3D model displayed on the screen."
-  poster="loading_placeholder.webp" 
-  loading="eager"
-  shadow-intensity="1"
-  exposure="1.2">
+  src=""
+  camera-controls
+  auto-rotate
+  ar
+  touch-action="pan-y">
 </model-viewer>
 
 <script>
-  // 📚 Model Configuration List 
-  // Use this structure to manage model-specific data (name, file, poster, alt)
-  const modelConfigs = [
-    { 
-      file: '11_10_2025.glb', 
-      alt: 'A detailed 3D model of an antique globe.',
-      poster: 'poster1.webp' 
-    },
-    { 
-      file: '12_6_2025 (1).glb', 
-      alt: 'A futuristic spaceship model ready for launch.',
-      poster: 'poster2.webp' 
-    },
-    { 
-      file: '12_6_2025.glb', 
-      alt: 'A colorful low-poly tree.',
-      poster: 'poster3.webp' 
-    }
-    // Add more configurations here
-  ];
+  // List your GLB files in the root of the repo
+  // Note: Spaces in filenames are replaced with %20 to ensure they load
+  const models = [
+    '11_10_2025.glb',
+    '12_6_2025%20(1).glb', 
+    '12_6_2025.glb'
+  ];
 
-  const mv = document.getElementById('mv');
-  
-  // 🎲 Select a random model configuration
-  const randIndex = Math.floor(Math.random() * modelConfigs.length);
-  const selectedModel = modelConfigs[randIndex];
+  const mv = document.getElementById('mv');
+  const rand = models[Math.floor(Math.random() * models.length)];
 
-  // ⚙️ Apply the Configuration to the Viewer
-  // FIX for AR: Explicitly ensure the 'ar' attribute is present after dynamic setting
-  mv.setAttribute('ar', ''); 
+  // --- AR FIX ---
+  // 1. Explicitly set the AR attribute before loading
+  mv.setAttribute('ar', '');
 
-  // Set the GLB source
-  mv.src = selectedModel.file;
-  
-  // Set the corresponding alt text
-  mv.setAttribute('alt', selectedModel.alt);
+  // 2. Set the GLB source
+  mv.src = rand;
 
-  // Set the poster image for faster perceived loading
-  mv.setAttribute('poster', selectedModel.poster);
-
-  // Ensure the viewer reloads the model data and AR compatibility reliably
-  mv.load(); 
+  // 3. Reload the viewer
+  mv.load(); 
 </script>
 
 </body>
