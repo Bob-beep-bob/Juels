@@ -8,8 +8,22 @@
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 
   <style>
-    body, html { margin:0; padding:0; height:100%; overflow:hidden; background:white; }
-    model-viewer { width:100%; height:100vh; background:#fff; }
+    /*       CRITICAL CSS FOR FULL SCREEN: 
+      Ensures body and html take up full viewport height, and 
+      model-viewer uses that full height.
+    */
+    body, html { 
+      margin:0; 
+      padding:0; 
+      height:100%; /* Ensures <html> and <body> use 100% of the visible area */
+      overflow:hidden; 
+      background:white; 
+    }
+    model-viewer { 
+      width:100%; 
+      height:100vh; /* 'vh' ensures it covers the device viewport height */
+      background:#fff; 
+    }
   </style>
 </head>
 <body>
@@ -19,36 +33,31 @@
   camera-controls
   auto-rotate
   ar
-  touch-action="pan-y">
+  touch-action="pan-y"
+  camera-orbit="0deg 90deg 1.2m" /* Camera distance: 1.2m is closer than default */
+  field-of-view="30deg" /* Zoom factor: 30deg is tighter than default */
+  shadow-intensity="1">
 </model-viewer>
 
 <script>
   // List your GLB files.
   const models = [
     '11_10_2025.glb',
-    '12_6_2025_2.glb', // Renamed file
+    '12_6_2025_2.glb', 
     '12_6_2025.glb'
-    // Add more if needed
   ];
 
   const mv = document.getElementById('mv');
   const rand = models[Math.floor(Math.random() * models.length)];
 
-  // 1. Set the AR property to ensure the viewer knows its purpose.
-  // Setting the property directly is often more reliable than using setAttribute.
+  // 1. Set the AR property 
   mv.ar = true;
 
   // 2. Set the GLB source
   mv.src = rand;
 
-  // 3. Reload the viewer (ensures AR compatibility is initialized reliably)
+  // 3. Reload the viewer
   mv.load(); 
-  
-  // Optional: Check the console for any errors (press F12 on desktop).
-  mv.addEventListener('error', (e) => {
-    console.error("Model Loading Error:", e);
-    // This will help confirm the file path is 100% correct on GitHub
-  });
 </script>
 
 </body>
