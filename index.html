@@ -1,41 +1,19 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Random 3D Model Viewer</title>
 
   <!-- model-viewer -->
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 
   <style>
-    body, html {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      background: white;
-      overflow: hidden;
-    }
-    model-viewer {
-      width: 100%;
-      height: 100vh;
-      background: #ffffff;
-    }
+    body, html { margin:0; padding:0; height:100%; overflow:hidden; background:white; }
+    model-viewer { width:100%; height:100vh; background:#fff; }
   </style>
 </head>
 <body>
-
-<script>
-  // 👉 LIST YOUR FILES HERE (as they are in your repo root)
-  const models = [
-    '11_10_2025.glb',
-    '12_6_2025 (1).glb',
-    '12_6_2025.glb'
-    // Add as many as you want
-  ];
-
-  const rand = models[Math.floor(Math.random() * models.length)];
-</script>
 
 <!-- Viewer -->
 <model-viewer id="mv"
@@ -47,8 +25,20 @@
 </model-viewer>
 
 <script>
-  // Set the random model as the viewer source
-  document.getElementById('mv').src = rand;
+  // List your GLB files in the root of the repo
+  const models = [
+    '11_10_2025.glb',
+    '12_6_2025 (1).glb',
+    '12_6_2025.glb'
+    // Add more if needed
+  ];
+
+  const mv = document.getElementById('mv');
+  const rand = models[Math.floor(Math.random() * models.length)];
+
+  // Set the GLB source and reload the viewer
+  mv.src = rand;
+  mv.load(); // ensures AR button works reliably on Android
 </script>
 
 </body>
