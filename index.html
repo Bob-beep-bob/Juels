@@ -3,14 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Random 3D Model Viewer</title>
+  <title>Juels</title>
 
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 
   <style>
     body, html { margin:0; padding:0; height:100%; overflow:hidden; background:white; }
-    /* Ensure the viewer takes up full space */
-    model-viewer { width:100%; height:100vh; background-color: #f5f5f5; }
+    model-viewer { width:100%; height:100vh; background-color: #eee; }
   </style>
 </head>
 <body>
@@ -18,8 +17,9 @@
 <model-viewer id="mv"
   src=""
   ar
-  ar-modes="webxr scene-viewer quick-look"
+  ar-modes="scene-viewer webxr quick-look"
   ar-scale="auto"
+  ar-placement="floor"
   camera-controls
   auto-rotate
   shadow-intensity="1"
@@ -27,8 +27,9 @@
 </model-viewer>
 
 <script>
-  // ⚠️ CRITICAL: Ensure these file names match your actual files EXACTLY.
-  // If your server does not support spaces in URLs, rename the file on your computer to remove the space.
+  // ⚠️ PLEASE RENAME YOUR FILE ON YOUR COMPUTER:
+  // Change "12_6_2025 (1).glb" to "12_6_2025_v2.glb"
+  // Spaces and parentheses break AR intents on Android.
   const models = [
     '11_10_2025.glb',
     '12_6_2025_2.glb', 
@@ -37,21 +38,26 @@
 
   const mv = document.getElementById('mv');
 
-  // Handle errors to help debug if the file isn't loading
-  mv.addEventListener('error', (event) => {
-    console.error("Error loading model:", event);
-    alert("Error loading model! Check the console (F12) to see if the file path is wrong.");
+  // Error listener to see if AR is failing silently
+  mv.addEventListener('error', (error) => {
+    console.log("Error detected:", error);
+    alert("Error loading model. Make sure you are using HTTPS!");
   });
 
-  // Pick random model
   const rand = models[Math.floor(Math.random() * models.length)];
-  console.log("Loading model:", rand);
-
+  
   // Set source
   mv.src = rand;
-  
-  // Force AR enabled via Property (more reliable than setAttribute sometimes)
-  mv.ar = true;
+
+  // Wait for the component to be ready before forcing AR checks
+  mv.addEventListener('load', () => {
+      // Explicitly check if AR is available (Debugging)
+      if (mv.canActivateAR) {
+          console.log("AR is available!");
+      } else {
+          console.log("AR is NOT available. Check HTTPS or Device compatibility.");
+      }
+  });
 </script>
 
 </body>
