@@ -9,40 +9,49 @@
 
   <style>
     body, html { margin:0; padding:0; height:100%; overflow:hidden; background:white; }
-    model-viewer { width:100%; height:100vh; background:#fff; }
+    /* Ensure the viewer takes up full space */
+    model-viewer { width:100%; height:100vh; background-color: #f5f5f5; }
   </style>
 </head>
 <body>
 
 <model-viewer id="mv"
   src=""
+  ar
+  ar-modes="webxr scene-viewer quick-look"
+  ar-scale="auto"
   camera-controls
   auto-rotate
-  ar
+  shadow-intensity="1"
   touch-action="pan-y">
 </model-viewer>
 
 <script>
-  // List your GLB files in the root of the repo
-  // Note: Spaces in filenames are replaced with %20 to ensure they load
+  // ⚠️ CRITICAL: Ensure these file names match your actual files EXACTLY.
+  // If your server does not support spaces in URLs, rename the file on your computer to remove the space.
   const models = [
     '11_10_2025.glb',
-    '12_6_2025%20(1).glb', 
+    '12_6_2025_2.glb', 
     '12_6_2025.glb'
   ];
 
   const mv = document.getElementById('mv');
+
+  // Handle errors to help debug if the file isn't loading
+  mv.addEventListener('error', (event) => {
+    console.error("Error loading model:", event);
+    alert("Error loading model! Check the console (F12) to see if the file path is wrong.");
+  });
+
+  // Pick random model
   const rand = models[Math.floor(Math.random() * models.length)];
+  console.log("Loading model:", rand);
 
-  // --- AR FIX ---
-  // 1. Explicitly set the AR attribute before loading
-  mv.setAttribute('ar', '');
-
-  // 2. Set the GLB source
+  // Set source
   mv.src = rand;
-
-  // 3. Reload the viewer
-  mv.load(); 
+  
+  // Force AR enabled via Property (more reliable than setAttribute sometimes)
+  mv.ar = true;
 </script>
 
 </body>
