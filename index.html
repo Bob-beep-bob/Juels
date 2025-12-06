@@ -1,63 +1,56 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Random 3D Model Viewer</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Random 3D Model Viewer</title>
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      background: white;
+    }
 
-    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-
-  <style>
-    /*       CRITICAL CSS FOR FULL SCREEN: 
-      Ensures body and html take up full viewport height, and 
-      model-viewer uses that full height.
-    */
-    body, html { 
-      margin:0; 
-      padding:0; 
-      height:100%; /* Ensures <html> and <body> use 100% of the visible area */
-      overflow:hidden; 
-      background:white; 
-    }
-    model-viewer { 
-      width:100%; 
-      height:100vh; /* 'vh' ensures it covers the device viewport height */
-      background:#fff; 
-    }
-  </style>
+    model-viewer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #fff;
+      z-index: 999;
+    }
+  </style>
 </head>
 <body>
 
 <model-viewer id="mv"
-  src=""
-  camera-controls
-  auto-rotate
-  ar
-  touch-action="pan-y"
-  camera-orbit="0deg 90deg 1.2m" /* Camera distance: 1.2m is closer than default */
-  field-of-view="30deg" /* Zoom factor: 30deg is tighter than default */
-  shadow-intensity="1">
+  src=""
+  camera-controls
+  auto-rotate
+  ar
+  touch-action="pan-y">
 </model-viewer>
 
 <script>
-  // List your GLB files.
-  const models = [
-    '11_10_2025.glb',
-    '12_6_2025_2.glb', 
-    '12_6_2025.glb'
-  ];
+  const models = [
+    '11_10_2025.glb',
+    '12_6_2025_2.glb',
+    '12_6_2025.glb'
+  ];
 
-  const mv = document.getElementById('mv');
-  const rand = models[Math.floor(Math.random() * models.length)];
+  const mv = document.getElementById('mv');
+  const rand = models[Math.floor(Math.random() * models.length)];
 
-  // 1. Set the AR property 
-  mv.ar = true;
+  mv.ar = true;
+  mv.src = rand;
+  mv.load();
 
-  // 2. Set the GLB source
-  mv.src = rand;
-
-  // 3. Reload the viewer
-  mv.load(); 
+  mv.addEventListener('error', (e) => console.error("Model Loading Error:", e));
 </script>
 
 </body>
