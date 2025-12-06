@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Juels</title>
+  <title>Random 3D Model Viewer</title>
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
   <style>
     html, body {
@@ -15,14 +15,17 @@
       background: white;
     }
 
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
     model-viewer {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 95vh;  /* slightly smaller to show AR button */
+      width: 100%;
+      max-height: 90vh;  /* leave space for AR button */
       background: #fff;
-      z-index: 999;
     }
   </style>
 </head>
@@ -46,7 +49,6 @@
   const mv = document.getElementById('mv');
   const rand = models[Math.floor(Math.random() * models.length)];
 
-  mv.ar = true;
   mv.src = rand;
   mv.load();
 
